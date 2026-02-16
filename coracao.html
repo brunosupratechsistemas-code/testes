@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coração Interativo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            padding: 20px;
+            color: #5a3d5c;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: #e84393;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #6d456d;
+        }
+        
+        .heart-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .heart {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: #e84393;
+            transform: rotate(45deg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: heartbeat 1.2s infinite;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .heart:hover {
+            background-color: #fd79a8;
+            transform: rotate(45deg) scale(1.1);
+        }
+        
+        .heart:before,
+        .heart:after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background-color: #e84393;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .heart:hover:before,
+        .heart:hover:after {
+            background-color: #fd79a8;
+        }
+        
+        .heart:before {
+            top: -100px;
+            left: 0;
+        }
+        
+        .heart:after {
+            top: 0;
+            left: -100px;
+        }
+        
+        .heart-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            pointer-events: none;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 180px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-box h3 {
+            color: #e84393;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #6d456d;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            background: #e84393;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(232, 67, 147, 0.3);
+        }
+        
+        .btn:hover {
+            background: #fd79a8;
+            transform: translateY(-3px);
+        }
+        
+        .btn i {
+            margin-right: 8px;
+        }
+        
+        .message {
+            margin-top: 25px;
+            font-size: 1.1rem;
+            color: #6d456d;
+            font-style: italic;
+            min-height: 30px;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            color: #fff;
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .footer a {
+            color: #fff;
+            text-decoration: underline;
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: rotate(45deg) scale(1); }
+            5% { transform: rotate(45deg) scale(1.1); }
+            10% { transform: rotate(45deg) scale(1); }
+            15% { transform: rotate(45deg) scale(1.15); }
+            20% { transform: rotate(45deg) scale(1); }
+            100% { transform: rotate(45deg) scale(1); }
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .heart-container {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .heart, .heart:before, .heart:after {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .heart:before {
+                top: -75px;
+            }
+            
+            .heart:after {
+                left: -75px;
+            }
+            
+            .stats {
+                gap: 20px;
+            }
+            
+            .stat-box {
+                min-width: 140px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-heart"></i> Coração Interativo</h1>
+        <p class="subtitle">Clique no coração para ver a mágica acontecer!</p>
+        
+        <div class="heart-container">
+            <div class="heart" id="interactiveHeart"></div>
+            <div class="heart-text" id="heartText">Clique-me!</div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-box">
+                <h3><i class="fas fa-heartbeat"></i> Cliques</h3>
+                <div class="stat-value" id="clickCount">0</div>
+            </div>
+            
+            <div class="stat-box">
+                <h3><i class="fas fa-palette"></i> Cor Atual</h3>
+                <div class="stat-value" id="colorName">Rosa</div>
+            </div>
+            
+            <div class="stat-box">
+                <h3><i class="fas fa-expand-alt"></i> Tamanho</h3>
+                <div class="stat-value" id="sizeValue">100%</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="colorBtn"><i class="fas fa-palette"></i> Mudar Cor</button>
+            <button class="btn" id="sizeBtn"><i class="fas fa-expand-alt"></i> Aumentar</button>
+            <button class="btn" id="resetBtn"><i class="fas fa-redo"></i> Reiniciar</button>
+            <button class="btn" id="animateBtn"><i class="fas fa-play"></i> Pausar Animação</button>
+        </div>
+        
+        <div class="message" id="message">
+            Clique no coração para começar!
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Página com coração interativo | Criado com <i class="fas fa-heart" style="color:#e84393;"></i> para demonstração</p>
+    </div>
+
+    <script>
+        // Elementos DOM
+        const heart = document.getElementById('interactiveHeart');
+        const heartText = document.getElementById('heartText');
+        const clickCountElement = document.getElementById('clickCount');
+        const colorNameElement = document.getElementById('colorName');
+        const sizeValueElement = document.getElementById('sizeValue');
+        const messageElement = document.getElementById('message');
+        
+        // Botões
+        const colorBtn = document.getElementById('colorBtn');
+        const sizeBtn = document.getElementById('sizeBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const animateBtn = document.getElementById('animateBtn');
+        
+        // Variáveis de estado
+        let clickCount = 0;
+        let currentColorIndex = 0;
+        let currentSize = 100;
+        let isAnimating = true;
+        
+        // Cores disponíveis
+        const colors = [
+            { name: "Rosa", value: "#e84393" },
+            { name: "Vermelho", value: "#ff3838" },
+            { name: "Roxo", value: "#8e44ad" },
+            { name: "Azul", value: "#3498db" },
+            { name: "Verde", value: "#27ae60" },
+            { name: "Laranja", value: "#f39c12" }
+        ];
+        
+        // Mensagens aleatórias para exibir
+        const messages = [
+            "Que lindo! 💖",
+            "Mais uma vez! 😊",
+            "Você é especial! 🌟",
+            "Coração batendo forte! 💓",
+            "Muito amor! ❤️",
+            "Incrível! ✨",
+            "Continue assim! 😍",
+            "Isso aí! 👍",
+            "Espalhando amor! 💕",
+            "Fantástico! 🎉"
+        ];
+        
+        // Função para mudar a cor do coração
+        function changeHeartColor() {
+            currentColorIndex = (currentColorIndex + 1) % colors.length;
+            const newColor = colors[currentColorIndex];
+            
+            heart.style.backgroundColor = newColor.value;
+            heart.style.setProperty('--heart-color', newColor.value);
+            
+            // Atualiza os elementos pseudo (before e after)
+            const style = document.createElement('style');
+            style.textContent = `
+                .heart:before, .heart:after {
+                    background-color: ${newColor.value} !important;
+                }
+            `;
+            
+            // Remove estilos anteriores
+            const existingStyle = document.getElementById('heart-color-style');
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            style.id = 'heart-color-style';
+            document.head.appendChild(style);
+            
+            colorNameElement.textContent = newColor.name;
+            showMessage(`Cor alterada para ${newColor.name.toLowerCase()}!`);
+        }
+        
+        // Função para alterar o tamanho do coração
+        function changeHeartSize() {
+            currentSize = currentSize === 100 ? 130 : 100;
+            const scaleValue = currentSize / 100;
+            
+            heart.style.transform = `rotate(45deg) scale(${scaleValue})`;
+            heart.style.transition = 'transform 0.5s ease';
+            
+            // Atualiza os elementos pseudo (before e after)
+            const pseudoScale = currentSize === 100 ? 1 : 1.3;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                .heart:before, .heart:after {
+                    transform: scale(${pseudoScale}) !important;
+                    transition: all 0.5s ease !important;
+                }
+            `;
+            
+            // Remove estilos anteriores
+            const existingStyle = document.getElementById('heart-size-style');
+            if (existingStyle) {
+                existingStyle.remove();
+            }
+            
+            style.id = 'heart-size-style';
+            document.head.appendChild(style);
+            
+            sizeValueElement.textContent = `${currentSize}%`;
+            const sizeMessage = currentSize === 100 ? "normal" : "aumentado";
+            showMessage(`Coração ${sizeMessage}!`);
+            
+            // Reseta a transformação após a animação
+            setTimeout(() => {
+                heart.style.transition = 'all 0.3s ease';
+            }, 500);
+        }
+        
+        // Função para reiniciar o coração
+        function resetHeart() {
+            clickCount = 0;
+            currentColorIndex = 0;
+            currentSize = 100;
+            
+            // Resetar cor
+            const defaultColor = colors[0];
+            heart.style.backgroundColor = defaultColor.value;
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                .heart:before, .heart:after {
+                    background-color: ${defaultColor.value} !important;
+                    transform: scale(1) !important;
+                }
+            `;
+            
+            // Remove estilos anteriores
+            const existingColorStyle = document.getElementById('heart-color-style');
+            const existingSizeStyle = document.getElementById('heart-size-style');
+            if (existingColorStyle) existingColorStyle.remove();
+            if (existingSizeStyle) existingSizeStyle.remove();
+            
+            style.id = 'heart-reset-style';
+            document.head.appendChild(style);
+            
+            // Resetar tamanho
+            heart.style.transform = 'rotate(45deg) scale(1)';
+            
+            // Atualizar elementos de exibição
+            clickCountElement.textContent = clickCount;
+            colorNameElement.textContent = defaultColor.name;
+            sizeValueElement.textContent = `${currentSize}%`;
+            heartText.textContent = "Clique-me!";
+            
+            // Reiniciar animação se estiver pausada
+            if (!isAnimating) {
+                toggleAnimation();
+            }
+            
+            showMessage("Coração reiniciado! 💖");
+            
+            // Remover estilo de reset após um tempo
+            setTimeout(() => {
+                const resetStyle = document.getElementById('heart-reset-style');
+                if (resetStyle) resetStyle.remove();
+            }, 1000);
+        }
+        
+        // Função para alternar animação
+        function toggleAnimation() {
+            isAnimating = !isAnimating;
+            
+            if (isAnimating) {
+                heart.style.animation = 'heartbeat 1.2s infinite';
+                animateBtn.innerHTML = '<i class="fas fa-pause"></i> Pausar Animação';
+                showMessage("Animação retomada! 💓");
+            } else {
+                heart.style.animation = 'none';
+                animateBtn.innerHTML = '<i class="fas fa-play"></i> Retomar Animação';
+                showMessage("Animação pausada! ⏸️");
+            }
+        }
+        
+        // Função para mostrar mensagem
+        function showMessage(text) {
+            messageElement.textContent = text;
+            
+            // Limpa a mensagem após 3 segundos
+            setTimeout(() => {
+                if (messageElement.textContent === text) {
+                    messageElement.textContent = "";
+                }
+            }, 3000);
+        }
+        
+        // Função para gerar mensagem aleatória
+        function getRandomMessage() {
+            const randomIndex = Math.floor(Math.random() * messages.length);
+            return messages[randomIndex];
+        }
+        
+        // Event Listeners
+        heart.addEventListener('click', function() {
+            clickCount++;
+            clickCountElement.textContent = clickCount;
+            
+            // Efeito visual de clique
+            heart.style.transform = `rotate(45deg) scale(${currentSize/100 * 0.9})`;
+            setTimeout(() => {
+                heart.style.transform = `rotate(45deg) scale(${currentSize/100})`;
+            }, 150);
+            
+            // Alterar texto interno
+            heartText.textContent = clickCount === 1 ? "1 vez!" : `${clickCount} vezes!`;
+            
+            // Mostrar mensagem aleatória
+            showMessage(getRandomMessage());
+        });
+        
+        colorBtn.addEventListener('click', changeHeartColor);
+        sizeBtn.addEventListener('click', changeHeartSize);
+        resetBtn.addEventListener('click', resetHeart);
+        animateBtn.addEventListener('click', toggleAnimation);
+        
+        // Efeito hover para o coração
+        heart.addEventListener('mouseenter', function() {
+            heartText.textContent = "Clique aqui!";
+        });
+        
+        heart.addEventListener('mouseleave', function() {
+            if (clickCount > 0) {
+                heartText.textContent = clickCount === 1 ? "1 vez!" : `${clickCount} vezes!`;
+            } else {
+                heartText.textContent = "Clique-me!";
+            }
+        });
+        
+        // Inicialização
+        showMessage("Bem-vindo! Clique no coração para começar.");
+    </script>
+</body>
+</html>
